@@ -8,6 +8,8 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import categorical_crossentropy
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.applications.densenet import DenseNet121
+from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
 
 class PlantNet():
     
@@ -44,7 +46,7 @@ class PlantNet():
         return model
     
     def create_pretrained_model(self):
-        model_pretrained = DenseNet121(include_top=False, weights='imagenet', input_shape=(224,224,3))
+        model_pretrained = VGG16(include_top=False, weights='imagenet', input_shape=(224,224,3))
         
         model = Sequential()
         for layer in model_pretrained.layers:
@@ -54,10 +56,11 @@ class PlantNet():
 #         model.add(MaxPooling2D((2,2)))
         model.add(GlobalAveragePooling2D())
 #         model.add(Dense(100, activation='relu'))
+        model.add(Dense(250, activation='relu'))
         model.add(Dense(4, activation='softmax'))
         
         
-        model.compile(loss=categorical_crossentropy, optimizer=Adam(lr=0.1), metrics=['accuracy'])
+        model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
         return model
     
 if __name__ == "__main__":
@@ -71,16 +74,15 @@ if __name__ == "__main__":
 #     val_path = args.validation
     
     X_train = np.load(os.path.join(train_path, "training.npz"))["images"]
-    X_train = X_train / 255.
+    X_train = preprocess_input(X_train)
     
     y_train = np.load(os.path.join(train_path, "training.npz"))["labels"]
     y_train = to_categorical(y_train, 4)
     
     
     pn = PlantNet()
-    model = pn.create_pretrained_model()
     
-    model.fit(X_train, y_train, batch_size=16, validation_split=0.2, epochs=2, verbose=1)
+    pn.model.fit(X_train, y_train, batch_size=32, validation_split=0.2, epochs=20, verbose=2)
     
     
     
