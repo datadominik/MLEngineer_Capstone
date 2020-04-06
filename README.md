@@ -8,7 +8,7 @@ To reproduce the code, please read the following remarks.
 
 - **03_keras_model.ipynb:** Running Sagemaker training and deploy jobs as well as evaluating the final results and create a submission file for kaggle. (Kernel used: conda_tensorflow_p36)
 
-In **./src/**  the code for the Deep Learning algorithm as well as other helper code for visualizations is stored. 
+In **./src/**  the code for the Deep Learning algorithm as well as other helper code for visualizations is stored. You don't need to install additional libraries, the kernels mentioned have them pre-installed already. 
 
 ### Prerequisites
 The reproduce the results, you need to create the following file structure: 
@@ -16,3 +16,4 @@ The reproduce the results, you need to create the following file structure:
 - ./images: All the train and test images from [Kaggle](https://www.kaggle.com/c/plant-pathology-2020-fgvc7/data) need to be stored here.
 
 If those folders and files are available, you should be good to go. 
+
