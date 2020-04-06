@@ -1,4 +1,7 @@
 # Machine Learning Engineer Nanodegree, Capstone project
+**Project proposal:** project_proposal.pdf
+**Project report:** project_final_report.pdf
+
 To reproduce the code, please read the following remarks. 
 
 ### Overview
