@@ -8,7 +8,7 @@ from PIL import Image
 import os
 
 def plot_examples(df, _target_class="healthy", _rows=3, _columns=4, _figsize=(20,9)):
-    
+    """Helper function to plot image examples"""
     df_filtered = df[df[_target_class] == 1]
 
     fig = plt.figure(figsize=_figsize)
@@ -25,11 +25,10 @@ def plot_examples(df, _target_class="healthy", _rows=3, _columns=4, _figsize=(20
         plt.imshow(img)
         plt.axis('off')
         
-    #plt.tight_layout()
-    #fig.suptitle("Target class: {}".format(_target_class), fontsize=20)
     plt.show()
 
 def plot_hist(df, _target_class="healthy", _rows=3, _columns=4, _figsize=(20,9)):
+    """Helper function to calculate and plot color histograms"""
     # most logic from https://discuss.pytorch.org/t/plot-a-histogram-for-multiple-images-full-dataset/67600/15
     df_filtered = df[df[_target_class] == 1]
 
@@ -50,18 +49,15 @@ def plot_hist(df, _target_class="healthy", _rows=3, _columns=4, _figsize=(20,9))
         plt.xlabel('intensity')
         plt.ylabel('count')
         plt.title(str(img_name))
-        
-    
-    
+  
     plt.legend(['Red_Channel', 'Green_Channel', 'Blue_Channel'], loc='upper center', bbox_to_anchor=(0.5, -0.2),fancybox=False, shadow=False)
 
     plt.tight_layout()
-#     fig.suptitle("Target class: {}".format(_target_class), fontsize=20)
     plt.show()
     
     
 def plot_agg_hist(df, _target_class="healthy"):
-    
+    """Helper function to calculate and plot color histograms for multiple images"""
     # most logic from https://discuss.pytorch.org/t/plot-a-histogram-for-multiple-images-full-dataset/67600/15
     
     target_list = "./images/" + df[df[_target_class]==1].image_id.values + ".jpg"
@@ -92,8 +88,8 @@ def plot_agg_hist(df, _target_class="healthy"):
     plt.title(_target_class)
     plt.show()
     
-def plot_patches(patches_list, _rows=10, _columns=10, _figsize=(15,15)):
-    
+def plot_patches(patches_list, _rows=5, _columns=10, _figsize=(15,7)):
+    """Helper function to plot extracted patches of images"""
     fig = plt.figure(figsize=_figsize)
     
     columns = _columns
@@ -107,16 +103,16 @@ def plot_patches(patches_list, _rows=10, _columns=10, _figsize=(15,15)):
         plt.imshow(img, cmap="gray")
         plt.axis('off')
         
-    #plt.tight_layout()
-    fig.suptitle("Patch examples", fontsize=20)
     plt.show()
     
 def load_images(df, size=(224,224)):
+    """Helper function to load and resize images, returns list"""
     img_list = [np.asarray(Image.fromarray(imread("images/{}.jpg".format(img_name))).resize(size)) for img_name in df.image_id]
     return img_list
     
     
 def change_file_structure(df, src_dir="images", tar_dir="train_data", pred_list=["healthy", "multiple_diseases", "rust", "scab"], val_size=0.2):
+    """Helper function to change file structure of training data to fit Keras requirements. Returns stratified TRAIN/ VAL split file structure."""
     
     train_dir = os.path.join(tar_dir, "train")
     val_dir = os.path.join(tar_dir, "val")
